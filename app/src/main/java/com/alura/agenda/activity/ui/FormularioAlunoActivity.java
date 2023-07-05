@@ -1,8 +1,7 @@
 package com.alura.agenda.activity.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,21 +19,29 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         final AlunoDAO dao = new AlunoDAO();
 
         setTitle("Formulario para Preenchimento");
-        EditText campoNome = findViewById(R.id.activity_main_formulario_aluno_nome);
-        EditText campoTelefone = findViewById(R.id.activity_main_formulario_aluno_telefone);
-        EditText campoEmail = findViewById(R.id.activity_main_formulario_aluno_email);
+
+        final EditText campoNome = findViewById(R.id.activity_main_formulario_aluno_nome);
+        final EditText campoTelefone = findViewById(R.id.activity_main_formulario_aluno_telefone);
+        final EditText campoEmail = findViewById(R.id.activity_main_formulario_aluno_email);
 
         Button botaoSalvar = findViewById(R.id.activity_main_formulario_aluno_salvar);
 
 
         botaoSalvar.setOnClickListener(view -> {
-            String nome = campoNome.getText().toString();
-            String telefone = campoTelefone.getText().toString();
-            String email = campoEmail.getText().toString();
-
-            Aluno alunoCriado = new Aluno(nome, telefone, email);
+            Aluno alunoCriado = getAluno(campoNome, campoTelefone, campoEmail);
             dao.salva(alunoCriado);
-            startActivity(new Intent(FormularioAlunoActivity.this, ListaAlunosActivity.class));
+            finish();
         });
+
+    }
+
+    @NonNull
+    private static Aluno getAluno(EditText campoNome, EditText campoTelefone, EditText campoEmail) {
+        String nome = campoNome.getText().toString();
+        String telefone = campoTelefone.getText().toString();
+        String email = campoEmail.getText().toString();
+
+        Aluno alunoCriado = new Aluno(nome, telefone, email);
+        return alunoCriado;
     }
 }
